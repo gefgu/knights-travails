@@ -53,8 +53,6 @@ function knightMoves(startingPosition, endPosition) {
 
   buildGraph(graph);
 
-
-
   function findPath(graph) {
     // Transverse tree
     // If node has position different from end position
@@ -62,11 +60,22 @@ function knightMoves(startingPosition, endPosition) {
     // delete it
     // keep going until there is only one path.
 
+    function transverse(node) {
+      if (node.possibleMoves === null) return; // there is no way to transverse this node
 
+      node.possibleMoves = node.possibleMoves.filter((move) => {
+        if (move.possibleMoves !== null) return true; // only filter leafs of parent node - for now
+        move = move.position;
+        return move[0] === endPosition[0] && move[1] === endPosition[1];
+      });
+    }
+
+    transverse(graph);
+    console.log(graph);
+    return graph;
   }
 
   return findPath(graph);
-
 }
 
 // Node
