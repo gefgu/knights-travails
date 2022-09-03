@@ -18,6 +18,9 @@
 
 // To do this, use knight which has a gameboard
 // Return the shortest path.
+function knightMoves(startingPosition, endPosition) {
+  return [startingPosition, endPosition];
+}
 
 // Gameboard
 // It shows if a square is a valid one.
@@ -59,3 +62,5 @@ function Knight() {
 
   return { getValidMoves };
 }
+
+export default knightMoves;
