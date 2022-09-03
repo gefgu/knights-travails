@@ -64,15 +64,33 @@ function knightMoves(startingPosition, endPosition) {
       if (node.possibleMoves === null) return; // there is no way to transverse this node
 
       node.possibleMoves = node.possibleMoves.filter((move) => {
-        if (move.possibleMoves !== null) return true; // only filter leafs of parent node - for now
+        if (move.possibleMoves !== null) {
+          transverse(move);
+          return true; // only filter leafs of parent node - for now
+        }
         move = move.position;
         return move[0] === endPosition[0] && move[1] === endPosition[1];
       });
     }
 
+    function getPath(cleanNode) {
+      let path = [cleanNode.position];
+
+      let node = cleanNode;
+
+      while (node?.position) {
+        if (node?.possibleMoves === null || node === undefined) break;
+        const newNode = node?.possibleMoves[0];
+        if (newNode?.position) {
+          path.push(newNode.position);
+        }
+        node = newNode;
+      }
+      return path;
+    }
+
     transverse(graph);
-    console.log(graph);
-    return graph;
+    return getPath(graph);
   }
 
   return findPath(graph);
