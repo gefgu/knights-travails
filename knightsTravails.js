@@ -1,6 +1,6 @@
 // knightMoves
-// shows the shortest possible way to get from one square 
-// to another by outputting all squares the 
+// shows the shortest possible way to get from one square
+// to another by outputting all squares the
 // knight will stop on along the way.
 // eg. knightMoves([0,0],[1,2]) == [[0,0],[1,2]]
 // knightMoves([0,0],[3,3]) == [[0,0],[1,2],[3,3]]
@@ -19,9 +19,17 @@
 // To do this, use knight which has a gameboard
 // Return the shortest path.
 
-
 // Gameboard
 // It shows if a square is a valid one.
+function Gameboard() {
+  const isValid = (position) => {
+    [x, y] = position;
+    const validation = x >= 0 && x <= 8 && y >= 0 && y <= 8;
+    return validation;
+  };
+
+  return { isValid };
+}
 
 // Knight
 // It returns all possible moves (requires gameboard for validation)
