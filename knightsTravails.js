@@ -19,14 +19,58 @@
 // To do this, use knight which has a gameboard
 // Return the shortest path.
 function knightMoves(startingPosition, endPosition) {
+  const gameboard = Gameboard();
+  const knight = Knight();
+
+  let graph = Node(
+    startingPosition,
+    knight.getValidMoves(startingPosition, gameboard).map((move) => Node(move))
+  );
+
+  let foundPath = false;
+
+  function buildGraph(node) {
+    if (foundPath) return;
+
+    if (node.possibleMoves === null) {
+      node.possibleMoves = knight
+        .getValidMoves(node.position, gameboard)
+        .map((move) => Node(move));
+    }
+
+    if (
+      node.possibleMoves.some((move) => {
+        move = move.position;
+        return move[0] === endPosition[0] && move[1] === endPosition[1];
+      })
+    ) {
+      foundPath = true;
+      return;
+    }
+
+    node.possibleMoves.forEach((n) => buildGraph(n));
+  }
+
+  buildGraph(graph);
+
   return [startingPosition, endPosition];
+}
+
+// Node
+// Stores the position and all its possible and valid moves
+// possible Moves is an array of possible Moves
+function Node(position, possibleMoves = null) {
+  return {
+    position,
+    possibleMoves,
+  };
 }
 
 // Gameboard
 // It shows if a square is a valid one.
 function Gameboard() {
   const isValid = (position) => {
-    [x, y] = position;
+    const [x, y] = position;
     const validation = x >= 0 && x <= 8 && y >= 0 && y <= 8;
     return validation;
   };

@@ -7,7 +7,7 @@ test("Knigth moves - only 1", () => {
   ]);
 });
 
-test("Knigth moves - 2", () => {
+test.only("Knigth moves - 2", () => {
   expect(knightMoves([0, 0], [3, 3])).toStrictEqual([
     [0, 0],
     [1, 2],
