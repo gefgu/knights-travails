@@ -22,36 +22,32 @@ function knightMoves(startingPosition, endPosition) {
   const gameboard = Gameboard();
   const knight = Knight();
 
-  let graph = Node(
-    startingPosition,
-    knight.getValidMoves(startingPosition, gameboard).map((move) => Node(move))
-  );
+  let graph;
 
   let foundPath = false;
 
-  function buildGraph(node) {
-    if (foundPath) return;
-
-    if (node.possibleMoves === null) {
-      node.possibleMoves = knight
-        .getValidMoves(node.position, gameboard)
-        .map((move) => Node(move));
-    }
-
-    if (
-      node.possibleMoves.some((move) => {
-        move = move.position;
-        return move[0] === endPosition[0] && move[1] === endPosition[1];
-      })
-    ) {
-      foundPath = true;
-      return;
-    }
-
-    node.possibleMoves.forEach((n) => buildGraph(n));
+  function isEqualToEndPosition(position) {
+    return position[0] === endPosition[0] && position[1] === endPosition[1];
   }
 
-  buildGraph(graph);
+  function buildGraphLevelOrder() {
+    graph = Node(startingPosition);
+    let queue = [graph];
+    while (queue.length > 0 && !foundPath) {
+      const first = queue.shift();
+      if (isEqualToEndPosition(first.position)) {
+        foundPath = true;
+        break;
+      }
+      first.possibleMoves = knight
+        .getValidMoves(first.position, gameboard)
+        .map((move) => Node(move));
+
+      queue = queue.concat(...first.possibleMoves);
+    }
+  }
+
+  buildGraphLevelOrder(graph);
 
   function findPath(graph) {
     // Transverse tree
@@ -69,7 +65,7 @@ function knightMoves(startingPosition, endPosition) {
           return true; // only filter leafs of parent node - for now
         }
         move = move.position;
-        return move[0] === endPosition[0] && move[1] === endPosition[1];
+        return isEqualToEndPosition(move);
       });
     }
 
@@ -132,7 +128,7 @@ function Knight() {
     moves.push([x - 1, y + 2]);
     moves.push([x + 1, y + 2]);
     moves.push([x + 2, y + 1]);
-    moves.push([x + 2, y - 2]);
+    moves.push([x + 2, y - 1]);
     moves.push([x + 1, y - 2]);
 
     return moves;
