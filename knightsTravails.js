@@ -34,3 +34,20 @@ function Gameboard() {
 // Knight
 // It returns all possible moves (requires gameboard for validation)
 // from a position in the gameboard
+function Knight() {
+  const getAllMoves = (startingPosition) => {
+    const [x, y] = startingPosition;
+    let moves = [];
+
+    moves.push([x - 1, y - 2]);
+    moves.push([x - 2, y - 1]);
+    moves.push([x - 2, y + 1]);
+    moves.push([x - 1, y + 2]);
+    moves.push([x + 1, y + 2]);
+    moves.push([x + 2, y + 1]);
+    moves.push([x + 2, y - 2]);
+    moves.push([x + 1, y - 2]);
+
+    return moves;
+  };
+}
