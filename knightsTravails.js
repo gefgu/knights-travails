@@ -53,7 +53,20 @@ function knightMoves(startingPosition, endPosition) {
 
   buildGraph(graph);
 
-  return [startingPosition, endPosition];
+
+
+  function findPath(graph) {
+    // Transverse tree
+    // If node has position different from end position
+    // and null possible moves
+    // delete it
+    // keep going until there is only one path.
+
+
+  }
+
+  return findPath(graph);
+
 }
 
 // Node
