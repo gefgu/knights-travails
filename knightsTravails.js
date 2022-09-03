@@ -50,4 +50,12 @@ function Knight() {
 
     return moves;
   };
+
+  const getValidMoves = (startingPosition, gameboard) => {
+    return getAllMoves(startingPosition).filter((position) =>
+      gameboard.isValid(position)
+    );
+  };
+
+  return { getValidMoves };
 }
