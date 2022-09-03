@@ -18,7 +18,7 @@ test("Knigth moves - 2", () => {
 test("Knigth moves - 2 reverse", () => {
   expect(knightMoves([3, 3], [0, 0])).toStrictEqual([
     [3, 3],
-    [1, 2],
+    [2, 1],
     [0, 0],
   ]);
 });
