@@ -50,43 +50,43 @@ function knightMoves(startingPosition, endPosition) {
   buildGraphLevelOrder(graph);
 
   function findPath(graph) {
-    // Transverse tree
-    // If node has position different from end position
-    // and null possible moves
-    // delete it
-    // keep going until there is only one path.
+    // Do breath first search in
+    // subtrees.
+    // keep only the right one.
+    // inside the right one - repeat.
+    // repeat until node has no possible moves.
 
-    function transverse(node) {
-      if (node.possibleMoves === null) return; // there is no way to transverse this node
-
-      node.possibleMoves = node.possibleMoves.filter((move) => {
-        if (move.possibleMoves !== null) {
-          transverse(move);
-          return true; // only filter leafs of parent node - for now
+    function breathFirstSearch(node) {
+      let index = -1;
+      node.possibleMoves.forEach((child, childIndex) => {
+        if (index > -1) return;
+        let queue = [child];
+        while (queue.length > 0) {
+          const first = queue.shift();
+          if (isEqualToEndPosition(first.position)) {
+            index = childIndex;
+            break;
+          }
+          if (first?.possibleMoves) {
+            queue = queue.concat(...first.possibleMoves);
+          }
         }
-        move = move.position;
-        return isEqualToEndPosition(move);
       });
+
+      return index;
     }
 
-    function getPath(cleanNode) {
-      let path = [cleanNode.position];
+    let path = [graph.position];
 
-      let node = cleanNode;
-
-      while (node?.position) {
-        if (node?.possibleMoves === null || node === undefined) break;
-        const newNode = node?.possibleMoves[0];
-        if (newNode?.position) {
-          path.push(newNode.position);
-        }
-        node = newNode;
-      }
-      return path;
+    let possiblePaths = graph;
+    while (possiblePaths?.possibleMoves) {
+      const rightMove = breathFirstSearch(possiblePaths);
+      const newNode = possiblePaths.possibleMoves[rightMove];
+      path.push(newNode.position);
+      possiblePaths = newNode;
     }
 
-    transverse(graph);
-    return getPath(graph);
+    return path;
   }
 
   return findPath(graph);
