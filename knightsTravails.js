@@ -107,7 +107,7 @@ function Node(position, possibleMoves = null) {
 function Gameboard() {
   const isValid = (position) => {
     const [x, y] = position;
-    const validation = x >= 0 && x <= 8 && y >= 0 && y <= 8;
+    const validation = x >= 0 && x <= 7 && y >= 0 && y <= 7;
     return validation;
   };
 
